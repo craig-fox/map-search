@@ -11,6 +11,9 @@ class Body extends React.Component{
     }
     
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.removeLocationClient = this.removeLocationClient.bind(this);
   }
   
   componentDidMount(){
@@ -21,7 +24,9 @@ class Body extends React.Component{
     return ( 
       <div> 
         <NewLocation handleSubmit={this.handleSubmit} />
-        <AllLocations locations={this.state.locations} />
+        <AllLocations locations={this.state.locations} 
+                      handleDelete={this.handleDelete}
+                      onUpdate={this.handleUpdate} />
       </div> 
     ) 
   } 
@@ -31,5 +36,51 @@ class Body extends React.Component{
     this.setState({locations: newState});
   }
   
+  handleDelete(id){
+    $.ajax(
+      { 
+        url: `/api/v1/locations/${id}`, 
+        type: 'DELETE', 
+        success:() => { 
+          this.removeLocationClient(id); 
+        },
+        error: (msg) => {
+          console.log(msg.responseText);
+        }
+      });
+  }
   
+  handleUpdate(location){
+    console.log(location);
+    $.ajax(
+      { 
+        url: `/api/v1/locations/${location.id}`, 
+        type: 'PUT', 
+        data: { location },
+        success:() => { 
+          this.updateLocations(location);
+        }, 
+        error: (msg) => {
+          console.log(msg.responseText);
+        }
+      });
+  }
+  
+  updateLocations(location) { 
+    const locations = this.state.locations.filter(
+      (loc) => { 
+        return loc.id != location.id 
+      }
+    ); 
+      
+    locations.push(location); 
+    this.setState({locations: locations }); 
+  }
+
+  removeLocationClient(id) { 
+    var newLocations = this.state.locations.filter((location) => { 
+      return location.id != id; 
+    }); 
+    this.setState({ locations: newLocations }); 
+  }
 };

@@ -3,13 +3,29 @@
 
 
 class AllLocations extends React.Component{
+  constructor(){
+    super();
+    this.handleDelete = this.handleDelete.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
+  }
+  
+  handleDelete(id){
+    this.props.handleDelete(id);
+  }
+  
+  onUpdate(location){
+    this.props.onUpdate(location);
+  }
+  
   render(){
-    var locations= this.props.locations.map(
+    const locations= this.props.locations.map(
       (location) => { 
         return ( 
           <div key={location.id}> 
-            <h3>{location.name}</h3> 
-            <p>{location.description}</p> 
+            <Location location={location}
+                      handleDelete={this.handleDelete.bind(this, location.id)}
+                      handleUpdate={this.onUpdate}
+                      />
           </div> 
         ) 
       });

@@ -29,7 +29,10 @@ class NewLocation extends React.Component{
         data: { location: { name: name, description: description } }, 
         success: (location) => { 
           this.props.handleSubmit(location);
-        } 
+        },
+        error: (msg) => {
+          console.log(msg.responseText);
+        }
         
       });
   
