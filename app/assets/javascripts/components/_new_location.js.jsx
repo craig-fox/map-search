@@ -4,17 +4,25 @@
 /* global $ */
 
 class NewLocation extends React.Component{ 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this._handleClick = this._handleClick.bind(this);
+    const name = this.props.name;
+    const description = this.props.description;
+    this.state = {name: name, description: description};
+  }
+  
+  componentWillReceiveProps(newProps) {
+   this.setState({name: newProps.name, description: newProps.description});
   }
   
   render() { 
+   
     return ( 
       <div> 
         <h3>New Location</h3>
-        <input ref='name' placeholder='Enter the name of the location' />
-        <input ref='description' placeholder='Enter the description of the location' />
+        <input ref='name' value={this.state.name} placeholder='Enter the name of the location' />
+        <input ref='description' value={this.state.description}  placeholder='Enter the description of the location' />
         <button onClick={this._handleClick}>Submit</button>
       </div> 
     ) 

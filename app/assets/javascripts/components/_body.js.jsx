@@ -7,13 +7,16 @@ class Body extends React.Component{
     super();
 
     this.state = {
-      locations: []
+      locations: [],
+      mapName: '',
+      mapDescription: ''
     }
     
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleMapClick = this.handleMapClick.bind(this);
     this.updateLocations = this.updateLocations.bind(this);
     this.filterLocations = this.filterLocations.bind(this);
     this.removeLocationClient = this.removeLocationClient.bind(this);
@@ -27,12 +30,14 @@ class Body extends React.Component{
     return ( 
       <div> 
         <SearchLocation handleSearch={this.handleSearch} />
-        <NewLocation handleSubmit={this.handleSubmit} />
+        <NewLocation name={this.state.mapName} description={this.state.mapDescription} 
+                     handleSubmit={this.handleSubmit}
+                     />
         <h3>List of Locations</h3>
         <Locations locations={this.state.locations} 
                    handleDelete={this.handleDelete}
                    onUpdate={this.handleUpdate} />
-        <LocationMap />           
+        <LocationMap handleMapClick={this.handleMapClick} />           
       </div> 
     ) 
   } 
@@ -84,6 +89,12 @@ class Body extends React.Component{
           console.log(msg.responseText);
         }
       });
+  }
+  
+  handleMapClick(name, description){
+    console.log(name);
+    console.log(description);
+    this.setState({mapName: name, mapDescription: description});
   }
   
   updateLocations(location) { 
