@@ -32,6 +32,7 @@ class Body extends React.Component{
         <Locations locations={this.state.locations} 
                    handleDelete={this.handleDelete}
                    onUpdate={this.handleUpdate} />
+        <LocationMap />           
       </div> 
     ) 
   } 
