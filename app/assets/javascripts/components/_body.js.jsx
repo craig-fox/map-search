@@ -13,6 +13,9 @@ class Body extends React.Component{
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.updateLocations = this.updateLocations.bind(this);
+    this.filterLocations = this.filterLocations.bind(this);
     this.removeLocationClient = this.removeLocationClient.bind(this);
   }
   
@@ -23,10 +26,12 @@ class Body extends React.Component{
   render() { 
     return ( 
       <div> 
+        <SearchLocation handleSearch={this.handleSearch} />
         <NewLocation handleSubmit={this.handleSubmit} />
-        <AllLocations locations={this.state.locations} 
-                      handleDelete={this.handleDelete}
-                      onUpdate={this.handleUpdate} />
+        <h3>List of Locations</h3>
+        <Locations locations={this.state.locations} 
+                   handleDelete={this.handleDelete}
+                   onUpdate={this.handleUpdate} />
       </div> 
     ) 
   } 
@@ -44,6 +49,20 @@ class Body extends React.Component{
         success:() => { 
           this.removeLocationClient(id); 
         },
+        error: (msg) => {
+          console.log(msg.responseText);
+        }
+      });
+  }
+  
+  handleSearch(name){
+    $.ajax(
+      { 
+        url: `/api/v1/locations/`, 
+        type: 'GET', 
+        success:() => { 
+          this.filterLocations(name);
+        }, 
         error: (msg) => {
           console.log(msg.responseText);
         }
@@ -75,6 +94,16 @@ class Body extends React.Component{
       
     locations.push(location); 
     this.setState({locations: locations }); 
+  }
+  
+  filterLocations(name){
+    const locations = this.state.locations.filter(
+      (loc) => { 
+        return loc.name.toLowerCase().startsWith(name.toLowerCase())
+      }
+    ); 
+    
+    this.setState({locations: locations})
   }
 
   removeLocationClient(id) { 

@@ -1,4 +1,5 @@
 // app/assets/javascripts/components/_new_location.js.jsx 
+// app/assets/javascripts/components/_new_location.js.jsx 
 /* global React */
 /* global $ */
 
@@ -11,6 +12,7 @@ class NewLocation extends React.Component{
   render() { 
     return ( 
       <div> 
+        <h3>New Location</h3>
         <input ref='name' placeholder='Enter the name of the location' />
         <input ref='description' placeholder='Enter the description of the location' />
         <button onClick={this._handleClick}>Submit</button>

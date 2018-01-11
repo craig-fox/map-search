@@ -1,8 +1,8 @@
-// app/assets/javascripts/components/_all_locations.js.jsx 
+// app/assets/javascripts/components/_locations.js.jsx 
 /* global React */
 
 
-class AllLocations extends React.Component{
+class Locations extends React.Component{
   constructor(){
     super();
     this.handleDelete = this.handleDelete.bind(this);
@@ -21,19 +21,27 @@ class AllLocations extends React.Component{
     const locations= this.props.locations.map(
       (location) => { 
         return ( 
-          <div key={location.id}> 
-            <Location location={location}
+            <Location key={location.id} location={location}
                       handleDelete={this.handleDelete.bind(this, location.id)}
                       handleUpdate={this.onUpdate}
                       />
-          </div> 
         ) 
       });
       
       return( 
-        <div> 
-          {locations} 
-        </div> 
+          <table>
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th></th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+               {locations} 
+            </tbody>
+          </table>
       )
   }
 }
