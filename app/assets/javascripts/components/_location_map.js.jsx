@@ -22,7 +22,6 @@ class LocationMap extends React.Component{
       query: 'Google Auckland'
     };
     service.textSearch(request, (results, status)=>{
-      console.log(results);
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         for(let place of results){
           var marker = new google.maps.Marker({

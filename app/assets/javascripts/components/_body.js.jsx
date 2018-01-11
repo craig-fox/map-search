@@ -17,6 +17,7 @@ class Body extends React.Component{
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
+    this.handleSaveNewLocation = this.handleSaveNewLocation.bind(this);
     this.updateLocations = this.updateLocations.bind(this);
     this.filterLocations = this.filterLocations.bind(this);
     this.removeLocationClient = this.removeLocationClient.bind(this);
@@ -31,6 +32,7 @@ class Body extends React.Component{
       <div> 
         <SearchLocation handleSearch={this.handleSearch} />
         <NewLocation name={this.state.mapName} description={this.state.mapDescription} 
+                     handleSaveNewLocation={this.handleSaveNewLocation}
                      handleSubmit={this.handleSubmit}
                      />
         <h3>List of Locations</h3>
@@ -76,7 +78,6 @@ class Body extends React.Component{
   }
   
   handleUpdate(location){
-    console.log(location);
     $.ajax(
       { 
         url: `/api/v1/locations/${location.id}`, 
@@ -92,10 +93,27 @@ class Body extends React.Component{
   }
   
   handleMapClick(name, description){
-    console.log(name);
-    console.log(description);
     this.setState({mapName: name, mapDescription: description});
   }
+  
+  handleSaveNewLocation(name, description){
+    this.setState({mapName: name, mapDescription: description});
+    $.ajax(
+      { 
+        url: '/api/v1/locations', 
+        type: 'POST', 
+        data: { location: { name: name, description: description } }, 
+        success: (location) => { 
+          this.handleSubmit(location);
+        },
+        error: (msg) => {
+          console.log(msg.responseText);
+        }
+        
+    });
+  
+    console.log('The name value is ' + name + ', the description value is ' + description); 
+  }  
   
   updateLocations(location) { 
     const locations = this.state.locations.filter(

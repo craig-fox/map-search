@@ -6,14 +6,16 @@
 class NewLocation extends React.Component{ 
   constructor(props){
     super(props);
-    this._handleClick = this._handleClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     const name = this.props.name;
     const description = this.props.description;
     this.state = {name: name, description: description};
   }
   
   componentWillReceiveProps(newProps) {
-   this.setState({name: newProps.name, description: newProps.description});
+    this.setState({name: newProps.name, description: newProps.description});
   }
   
   render() { 
@@ -21,33 +23,27 @@ class NewLocation extends React.Component{
     return ( 
       <div> 
         <h3>New Location</h3>
-        <input ref='name' value={this.state.name} placeholder='Enter the name of the location' />
-        <input ref='description' value={this.state.description}  placeholder='Enter the description of the location' />
-        <button onClick={this._handleClick}>Submit</button>
+        <input ref='name' value={this.state.name} onChange={this.handleNameChange} placeholder='Enter the name of the location' />
+        <input ref='description' value={this.state.description} onChange={this.handleDescriptionChange}  placeholder='Enter the description of the location' />
+        <button onClick={this.handleClick}>Submit</button>
       </div> 
     ) 
   } 
   
-  _handleClick() {
+  handleNameChange(event){
+    this.setState({name: event.target.value});
+  }
+  
+  handleDescriptionChange(event){
+    this.setState({description: event.target.value});
+  }
+  
+  handleClick() {
     const name = this.refs.name.value;
     const description = this.refs.description.value;
-    
-    $.ajax(
-      { 
-        url: '/api/v1/locations', 
-        type: 'POST', 
-        data: { location: { name: name, description: description } }, 
-        success: (location) => { 
-          this.props.handleSubmit(location);
-        },
-        error: (msg) => {
-          console.log(msg.responseText);
-        }
-        
-      });
+    this.props.handleSaveNewLocation(name, description);
+  }  
   
-    console.log('The name value is ' + name + ', the description value is ' + description); 
-  }
   
   
 };
